@@ -13,8 +13,4 @@ public class GetServerStatus {
             list[1] = toMB(root.getUsableSpace());
             return list;
     }
-
-    public static String[] getCpuUsage() {
-
-    }
 }
