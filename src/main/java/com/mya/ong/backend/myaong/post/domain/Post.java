@@ -1,24 +1,25 @@
 package com.mya.ong.backend.myaong.post.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "post")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Post {
     @Id
-    @Column(name="id", length = 45, nullable = false)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
     @Column(name="title", length = 45, nullable = false)
     public String title;
     @Column(name="text", nullable = false)
     public String text;
-    @Column(name="userid", length = 45, nullable = false)
-    public String userid;
+    @Column(name="hashtag", length = 45, nullable = false)
+    public String hashtag;
 
 }

@@ -14,7 +14,7 @@ import java.util.Map;
 @RestController
 
 public class StatusController {
-    @GetMapping("/")
+    @GetMapping("/status")
     public Map<String , String> hello () {
         String[] storageInfo = GetServerStatus.getStorage();
         HashMap<String, String> map = new HashMap<>();
