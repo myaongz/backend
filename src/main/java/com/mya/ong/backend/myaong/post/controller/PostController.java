@@ -6,10 +6,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
-
-// 없는 리소스에 대한 예외 처리 필요
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PostController {
@@ -22,8 +21,12 @@ public class PostController {
     @PostMapping("/posts")
     @ResponseStatus(HttpStatus.CREATED)
     public Post savePost(@RequestBody Post post) {
-        Post savePost = repository.save(post);
-        return savePost;
+        try {
+            Post savedPost = repository.save(post);
+            return savedPost;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "게시물을 저장하는 중에 오류가 발생했습니다. 요청이 올바른지 확인 해주세요.", e);
+        }
     }
 
 
@@ -38,7 +41,7 @@ public class PostController {
     @ResponseStatus(HttpStatus.OK)
     public Post getPodyById(@PathVariable Long id) {
         Post receivedPost = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Entity with id = Not found"));
+                .orElseGet(Post::new);
         return receivedPost;
     }
 
@@ -52,7 +55,7 @@ public class PostController {
                     entity.setHashtag(post.getHashtag());
                     return repository.save(entity);
                 })
-                .orElseThrow(() -> new EntityNotFoundException("Post with id = Not found"));
+                .orElseGet(Post::new);
         return updatedPost;
     }
 
